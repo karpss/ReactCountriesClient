@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import {Query} from 'react-apollo';
+import { Query } from 'react-apollo';
 import ErrorMessage from './error';
+import Loading from './loading';
 
 
 const GET_COUNTRIES_CODE = gql`
@@ -16,14 +17,14 @@ const GET_COUNTRIES_CODE = gql`
 
 class App extends Component {
 
-state={
-  country: 'NG'
-};
+  state = {
+    country: 'NG'
+  };
 
 
-onCountryChange = event => {
-  this.setState({country: event.target.value});
-}
+  onCountryChange = event => {
+    this.setState({ country: event.target.value });
+  }
 
 
   render() {
@@ -31,50 +32,43 @@ onCountryChange = event => {
       <div >
         <Query query={GET_COUNTRIES_CODE}>
 
-         {({data, loading, error})=>{
+          {({ data, loading, error }) => {
 
-          if(loading) return <p>Loading...</p>;
-          if (error) return <ErrorMessage error={error}/>;
-          return(
-            <div>
-            <select value={this.state.country} onChange={this.onCountryChange}>
-              {data.countries.map(country => (
-               <option key={country.code} value={country.code}>
+            if (loading) return <Loading loading = {loading}/>;
+            if (error) return <ErrorMessage error={error} />;
 
-                  {country.name}
+            return (
+              <div>
+                <select value={this.state.country} onChange={this.onCountryChange}>
+                  {data.countries.map(country => (
+                    <option key={country.code} value={country.code}>
 
-
-               </option>
+                      {country.name}
 
 
-
-
-
-
-              ))}
-            </select>
-
-            <br/>
-
-            <li>
-             
-             {this.state.country}
-  
-            </li>
-
-
-
-
-
-            </div>
+                    </option>
 
 
 
 
 
 
+                  ))}
+                </select>
 
-          )
+                <br />
+
+                <li>
+
+                  {this.state.country}
+
+                </li>
+
+
+
+
+
+              </div>
 
 
 
@@ -82,16 +76,24 @@ onCountryChange = event => {
 
 
 
+            )
 
 
 
-         }}
+
+
+
+
+
+
+
+          }}
 
 
 
 
         </Query>
-        
+
       </div>
     );
   }
